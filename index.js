@@ -1,7 +1,7 @@
 const mosca = require("mosca");
-const settings = { port: 1884 };
+const settings = { port: 1883 };
 const broker = new mosca.Server(settings);
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const PlantModel = require("./plants.model");
 
 broker.on("ready", () => {
@@ -16,13 +16,13 @@ broker.on("published", async (packet) => {
   }
 });
 
-// MongoDB
-mongoose
-  .connect("mongodb://localhost:27017/plants", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then(() => console.log("Connected to DB!"))
-  .catch((error) => console.log(error));
+// // MongoDB
+// mongoose
+//   .connect("mongodb://localhost:27017/plants", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     useCreateIndex: true,
+//     useFindAndModify: false,
+//   })
+//   .then(() => console.log("Connected to DB!"))
+//   .catch((error) => console.log(error));
