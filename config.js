@@ -1,7 +1,7 @@
 const mqtt = require("mqtt");
-let temperature = Math.floor(Math.random() * 20);
-let humidity = Math.floor(Math.random() * 20);
 
+// Configure string for different data on publisher
+// Change input for different payloads
 exports.config = {
   client: mqtt.connect("mqtt://localhost:1883"),
   input: "xml", // json, xml and exi for corresponding output
@@ -10,8 +10,8 @@ exports.config = {
     data: {
       plant: {
         name: "Holy",
-        temperature,
-        humidity,
+        temperature: Math.floor(Math.random() * 20), // creates random temperature values
+        humidity: Math.floor(Math.random() * 20), // creates random humidity values
       },
     },
   },
