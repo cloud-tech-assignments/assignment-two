@@ -2,6 +2,7 @@ const parser = require("xml2json");
 const EXI4JSON = require("exificient.js");
 const { input, topic, client } = require("./config.js").config;
 
+// reads message payload and converts to json object based on input value from config.js
 const readMessage = (message) => {
   if (input == "json") {
     output = JSON.parse(message.toString());
@@ -19,6 +20,7 @@ const readMessage = (message) => {
   return output.data.plant;
 };
 
+// Template with a set up message that takes plant, topic, sensor and option as paremeters to make it dynamic
 const template = (plant, topic, sensor, option) => {
   const meassure = [plant.temperature, plant.humidity];
   let unit;
@@ -45,30 +47,16 @@ const template = (plant, topic, sensor, option) => {
   );
 };
 
+// Subscriber one for temperature
 client.on("message", (topic, message) => {
   template(readMessage(message), topic, "Temperature", 0);
 });
 
+// Subscriber two for temperature
 client.on("message", (topic, message) => {
   template(readMessage(message), topic, "Humidity", 1);
 });
-// client.on("message", (topic, message) => {
-//   if (input == "json") {
-//     output = message.toString();
-//   }
-//
-//   if (input == "xml") {
-//     output = parser.toJson(message.toString());
-//   }
-//   const object = JSON.parse(output);
-//   const plant = object.data.plant;
-//   const humidity = plant.humidity;
-//
-//   console.log(
-//     `Topic: ${topic}, Current plant ${plant.name} has humidity of ${humidity}%`
-//   );
-// });
-//
+
 client.on("connect", () => {
   client.subscribe(topic);
 });
