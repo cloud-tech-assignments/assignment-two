@@ -19,40 +19,40 @@ const readMessage = (message) => {
     output = EXI4JSON.parse(array);
   }
   // console.log(output);
-  return output.data.plant;
+  return output.data;
 };
 
 // Template with a set up message that takes plant, topic, sensor and option as paremeters to make it dynamic
 const template = (sensor, topic) => {
-  const { temperature, humidity, type, id } = sensor;
+  const { u, v, t, n } = sensor;
   let prefix, value, message;
 
-  const fahrenheit = temperature * 1.8 + 32;
+  const fahrenheit = v * 1.8 + 32;
 
-  if (temperature) {
+  if (u == "Cel") {
     prefix = "Temperature";
-    value = `${temperature} °C / ${Math.floor(fahrenheit)} F`;
-    if (temperature < 5) {
+    value = `${v} °C / ${Math.floor(fahrenheit)} F`;
+    if (v < 5) {
       message = `Current temp is below 5°C turn on the heat`;
     }
-    if (temperature > 5 && temperature < 10) {
+    if (v > 5 && v < 10) {
       message = `Current temp is between 5°C and 10°C good! `;
     }
-    if (temperature > 10) {
+    if (v > 10) {
       message = `Current temp is over 10 °C turn off the heat`;
     }
   }
 
-  if (humidity) {
+  if (u == "Percent") {
     prefix = "Humidity";
-    value = `${humidity} %`;
-    if (humidity < 5) {
+    value = `${v} %`;
+    if (v < 5) {
       message = `Current humidity is below 5% turn on the air fresher`;
     }
-    if (humidity > 5 && humidity < 10) {
+    if (v > 5 && v < 10) {
       message = `Current humidity is between 5% and 10% good!`;
     }
-    if (humidity > 10) {
+    if (v > 10) {
       message = `Current humidity is over 10% turn off air fresher`;
     }
   }
@@ -62,8 +62,9 @@ const template = (sensor, topic) => {
 	--------------------------------
 	Topic: ${topic}									
 	--------------------------------
-	Sensor: ${type} (id${id})
-	${prefix}: ${value}	
+	Sensor: ${n}
+	${prefix}: ${value}
+	Time: ${t}
 	Message: ${message}																	
 	-------------------------------
 `

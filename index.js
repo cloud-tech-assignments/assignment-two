@@ -27,13 +27,17 @@ broker.on("published", async (packet) => {
   }
   if (payload.slice(0, 1) == output && !payload.includes("client")) {
     if (input == "xml") {
-      payload = JSON.stringify(parser.toJson(payload));
+      payload = JSON.parse(parser.toJson(payload));
     }
 
     if (input == "exi") {
-      payload = JSON.stringify(EXI4JSON.parse(array));
+      payload = EXI4JSON.parse(array);
     }
 
+    if (input == "json") {
+      payload = JSON.parse(payload);
+    }
+    // payload = JSON.parse(payload);
     const plantData = new PlantModel({ payload });
     await plantData.save();
     console.log(

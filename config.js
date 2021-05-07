@@ -4,26 +4,24 @@ const mqtt = require("mqtt");
 // Change input for different payloads
 exports.config = {
   client: mqtt.connect("mqtt://localhost:1883"),
-  input: "xml", // json, xml and exi for corresponding output
+  input: "json", // json, xml and exi for corresponding output
   numOfPublishers: 2, // type 1 for one pubslisher and 2 for two publishers
   topicOne: "PLANTS/sensorOne", // topic for subscriber one
   topicTwo: "PLANTS/sensorTwo", // topic for subscriber two
   sensorOne: {
     data: {
-      plant: {
-        id: 1,
-        type: "ESP8266",
-        temperature: Math.floor(Math.random() * 20),
-      },
+      n: "urn:dev:ow:10e2073a01080063",
+      u: "Cel",
+      v: Math.floor(Math.random() * 20),
+      t: Date.now(),
     },
   },
   sensorTwo: {
     data: {
-      plant: {
-        id: 2,
-        type: "ESP8266",
-        humidity: Math.floor(Math.random() * 20),
-      },
+      n: "urn:dev:ow:10e2073a01080064",
+      u: "Percent",
+      v: Math.floor(Math.random() * 20),
+      t: Date.now(),
     },
   },
 };
